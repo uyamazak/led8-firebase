@@ -29,10 +29,16 @@ const myFirebase = {
           return (this.user && this.user.uid)
         },
         commandCollectionRef: function () {
-          return this.db.collection('/commands/')
+          return db.collection('/commands/')
         },
         photoCollectionRef: function () {
-          return this.db.collection('/photos/')
+          return db.collection('/photos/')
+        },
+        commandCountDocumentRef: function () {
+          return db.doc('/counters/command')
+        },
+        photoCountDocumentRef: function () {
+          return db.doc('/counters/photo')
         }
       },
       methods: {
@@ -80,9 +86,15 @@ const myFirebase = {
         },
         getPhotoUrl: function (path) {
           return storage.ref().child(path).getDownloadURL()
+        },
+        getCommandCount: function (callback) {
+          // https://firebase.google.com/docs/firestore/query-data/listen?hl=ja
+          return this.commandCountDocumentRef.onSnapshot(callback)
+        },
+        getPhotoCount: function (callback) {
+          return this.photoCountDocumentRef.onSnapshot(callback)
         }
-      },
-      mounted: function () { }
+      }
     })
     firebase
       .auth()
@@ -102,7 +114,6 @@ const myFirebase = {
         main.user = user
         if (user) {
           main.$eventHub.$emit('firebase-signedin')
-          console.log(user)
         }
       })
     Vue.prototype.$firebase = main

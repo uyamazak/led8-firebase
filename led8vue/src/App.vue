@@ -19,8 +19,7 @@
           <div class="text-center"><b-spinner v-if='isLoadingPhoto' type="grow" label="Loading..."></b-spinner></div>
           <b-img :src='recentPhotoLog.url' fluid :alt="'LED8 photo at ' + formatDate(recentPhotoLog.timestamp)"></b-img>
         </div>
-        <div>{{ formatDate(recentPhotoLog.timestamp) }}</div>
-        <div>{{ recentPhotoLog.status }}</div>
+        <div><small>Total Commands:</small> {{ commandCount }} / <small>Total Photos:</small> {{ photoCount }}</div>
       </div>
 
       <div class="pt-4">
@@ -120,7 +119,9 @@ export default {
       LEDCommandLog: [],
       isSameAsLatastStatus: true,
       recentPhotoLog: {},
-      isLoadingPhoto: false
+      isLoadingPhoto: false,
+      commandCount: 0,
+      photoCount: 0
     }
   },
   computed: {
@@ -212,42 +213,53 @@ export default {
           this.isLoadingLEDStatus = false
         })
     },
-    watchLEDCommandLogCallback: function (snapshot) {
-      const tmpLog = []
-      snapshot.forEach(doc => {
-        tmpLog.push(doc.data())
-      })
-      this.LEDCommandLog = tmpLog
-      this.isSameAsLatastStatus = (JSON.stringify(this.latestLEDCommandLog.status) === JSON.stringify(this.sortedLEDStatus))
-    },
     watchLEDCommandLog: function () {
-      this.$firebase.getLEDCommandLog(this.watchLEDCommandLogCallback, 10)
+      this.$firebase.getLEDCommandLog(snapshot => {
+        const tmpLog = []
+        snapshot.forEach(doc => {
+          tmpLog.push(doc.data())
+        })
+        this.LEDCommandLog = tmpLog
+        this.isSameAsLatastStatus = (JSON.stringify(this.latestLEDCommandLog.status) === JSON.stringify(this.sortedLEDStatus))
+      }, 10)
     },
     watchPhotoLog: function () {
-      this.$firebase.getRecentPhotoLog(this.watchPhotoLogCallback)
-    },
-    watchPhotoLogCallback: function (snapshot) {
-      const tmpLog = []
-      snapshot.forEach(doc => {
-        tmpLog.push(doc.data())
-        console.log(doc.data())
+      this.$firebase.getRecentPhotoLog(snapshot => {
+        const tmpLog = []
+        snapshot.forEach(doc => {
+          tmpLog.push(doc.data())
+        })
+        if (!tmpLog.length) {
+          return
+        }
+        const photoLog = tmpLog[0]
+        this.isLoadingPhoto = true
+        this.$firebase.getPhotoUrl(photoLog.path)
+          .then(url => {
+            photoLog['url'] = url
+            this.recentPhotoLog = photoLog
+          })
+          .catch(error => {
+            console.error(error)
+          })
+          .finally(() => {
+            this.isLoadingPhoto = false
+          })
       })
-      if (!tmpLog.length) {
-        return
-      }
-      const photoLog = tmpLog[0]
-      this.isLoadingPhoto = true
-      this.$firebase.getPhotoUrl(photoLog.path)
-        .then(url => {
-          photoLog['url'] = url
-          this.recentPhotoLog = photoLog
-        })
-        .catch(error => {
-          console.error(error)
-        })
-        .finally(() => {
-          this.isLoadingPhoto = false
-        })
+    },
+    watchCommandCount: function () {
+      this.$firebase.getCommandCount(snapshot => {
+        if (snapshot.data().value) {
+          this.commandCount = snapshot.data().value
+        }
+      })
+    },
+    watchPhotoCount: function () {
+      this.$firebase.getPhotoCount(snapshot => {
+        if (snapshot.data().value) {
+          this.photoCount = snapshot.data().value
+        }
+      })
     }
   },
   watch: {
@@ -264,10 +276,11 @@ export default {
     this.loadRecentLEDStatus()
     this.watchLEDCommandLog()
     this.watchPhotoLog()
+    this.watchCommandCount()
+    this.watchPhotoCount()
   }
 }
 </script>
 
 <style>
-
 </style>
