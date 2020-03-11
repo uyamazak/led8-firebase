@@ -1,0 +1,19 @@
+steps:
+  - id: 'Install npm packages in vue'
+    dir: led8vue
+    name: 'node:12.9-buster'
+    args: ['npm', 'install']
+  - id: 'Install npm packages in functions'
+    dir: functions
+    name: 'node:12.9-buster'
+    args: ['npm', 'install']
+  - id: 'Install vue/cli'
+    name: 'node:12.9-buster'
+    args: ['yarn', 'global', 'add', '@vue/cli']
+  - id: 'Build App'
+    dir: led8vue
+    name: 'node:12.9-buster'
+    args: ['yarn', 'build']
+  - id: "Deploy to Firebase"
+    name: 'gcr.io/$PROJECT_ID/firebase'
+    args: ['deploy']
