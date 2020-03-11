@@ -1,5 +1,9 @@
 <template>
 <div>
+    <div class="jumbotron text-dark mt-5">
+    2020/3　ラズペリーパイを他の用途で使用するため、終了しました。<br>
+    ボタンを押してもしませんが表示は当分このままに
+    </div>
   <div>
   <b-navbar variant="faded" type="light">
     <b-navbar-brand tag="h1" class="mb-0">LED8</b-navbar-brand>
