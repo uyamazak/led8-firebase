@@ -2,7 +2,7 @@ import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
-/*
+
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_API_KEY,
   authDomain: process.env.VUE_APP_AUTH_DOMAIN,
@@ -12,16 +12,6 @@ const firebaseConfig = {
   messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID,
   appId: process.env.VUE_APP_APP_ID
 }
-*/
-const firebaseConfig = {
-  apiKey: "AIzaSyA_Ipa92cZO3ym4piGI2hDHEEcoNySYtQg",
-  authDomain: "javelin-genki.firebaseapp.com",
-  databaseURL: "https://javelin-genki.firebaseio.com",
-  projectId: "javelin-genki",
-  storageBucket: "javelin-genki.appspot.com",
-  messagingSenderId: "456395073997",
-  appId: "1:456395073997:web:72d16d66a74412ae"
-};
 firebase.initializeApp(firebaseConfig)
 const db = firebase.firestore()
 const storage = firebase.storage()
