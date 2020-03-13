@@ -14,14 +14,6 @@ steps:
     dir: led8vue
     name: 'node:12.9-buster'
     args: ['yarn', 'build']
-    env:
-    - 'VUE_APP_API_KEY=$VUE_APP_API_KEY'
-    - 'VUE_APP_APP_ID=$VUE_APP_APP_ID'
-    - 'VUE_APP_AUTH_DOMAIN=$VUE_APP_AUTH_DOMAIN'
-    - 'VUE_APP_DATABASE_URL=$VUE_APP_DATABASE_URL'
-    - 'VUE_APP_MESSAGING_SENDER_ID=$VUE_APP_MESSAGING_SENDER_ID'
-    - 'VUE_APP_PROJECT_ID=$VUE_APP_PROJECT_ID'
-    - 'VUE_APP_STORAGE_BUCKET=$VUE_APP_STORAGE_BUCKET'
   - id: "Fireabse Target apply"
     name: 'gcr.io/$PROJECT_ID/firebase'
     args: ['target', 'apply', 'hosting', '$TARGET_SITE_NAME', '$TARGET_SITE_NAME', '--project', '$PROJECT_ID']
