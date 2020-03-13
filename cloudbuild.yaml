@@ -14,7 +14,7 @@ steps:
     dir: led8vue
     name: 'node:12.9-buster'
     args: ['yarn', 'build']
-  - id: "Deploy to Firebase"
+  - id: "Fireabse Target apply"
     name: 'gcr.io/$PROJECT_ID/firebase'
     args: ['target', 'apply', '--project', '$PROJECT_ID', 'hosting', 'ledeight', 'ledeight']
   - id: "Deploy to Firebase"
