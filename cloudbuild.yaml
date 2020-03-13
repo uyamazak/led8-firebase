@@ -24,7 +24,7 @@ steps:
     - 'VUE_APP_STORAGE_BUCKET=$_VUE_APP_STORAGE_BUCKET'
   - id: "Fireabse Target apply"
     name: 'gcr.io/$PROJECT_ID/firebase'
-    args: ['target', 'apply', 'hosting', '$_TARGET_SITE_NAME', '$_TARGET_SITE_NAME']
+    args: ['target:apply', 'hosting', '$_TARGET_SITE_NAME', '$_TARGET_SITE_NAME', '--project', '$PROJECT_ID']
   - id: "Deploy to Firebase"
     name: 'gcr.io/$PROJECT_ID/firebase'
     args: ['deploy', '--project', '$PROJECT_ID']
