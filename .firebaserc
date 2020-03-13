@@ -3,7 +3,7 @@
     "javelin-genki": {
       "hosting": {
         "ledeight": [
-          "ledeight.web.app"
+          "ledeight"
         ]
       }
     }

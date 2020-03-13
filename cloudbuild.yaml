@@ -16,4 +16,7 @@ steps:
     args: ['yarn', 'build']
   - id: "Deploy to Firebase"
     name: 'gcr.io/$PROJECT_ID/firebase'
+    args: ['target', 'apply', '--project', '$PROJECT_ID', 'hosting', 'ledeight', 'ledeight']
+  - id: "Deploy to Firebase"
+    name: 'gcr.io/$PROJECT_ID/firebase'
     args: ['deploy', '--project', '$PROJECT_ID']
