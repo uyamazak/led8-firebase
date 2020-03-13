@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "javelin-genki": {
+      "hosting": {
+        "ledeight": [
+          "ledeight.web.app"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "javelin-genki"
+  }
+}
